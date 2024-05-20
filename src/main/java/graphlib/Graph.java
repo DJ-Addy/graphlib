@@ -466,5 +466,27 @@ public class Graph
 
         return newGraph;
     }
-
+    
+   
+    public Graph Reachability(Node start) {
+        Graph reachable = new Graph();
+        Set<Node> visited = new HashSet<>();
+    
+        // Perform BFS starting from the given start node
+        bfs(start.getName(), new NodeVisitor() {
+            public void visit(Node node) {
+                visited.add(node);
+                Node newNode = reachable.getOrCreateNode(node.getName());
+                for (Node neighbor : node.getNeighbors()) {
+                    if (!visited.contains(neighbor)) {
+                        Node newNeighbor = reachable.getOrCreateNode(neighbor.getName());
+                        newNode.addDirectedEdge(newNeighbor, node.getWeight(neighbor));
+                    }
+                }
+            }
+        });
+    
+        return reachable;
+    }
+    
 }
